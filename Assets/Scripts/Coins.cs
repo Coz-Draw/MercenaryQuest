@@ -1,13 +1,19 @@
 using UnityEngine;
 
-public class Coin : MonoBehaviour
+public class Coins : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D other)
+    public AudioClip sound;
+    private Rigidbody2D rb;
+    void Start()
     {
-        // Verifica si quien toca la moneda es el jugador
-        if (other.CompareTag("Player"))
+        rb = GetComponent<Rigidbody2D>();
+
+        // Sonido (opcional)
+        if (Camera.main != null && sound != null)
         {
-            Destroy(gameObject);
+            AudioSource audio = Camera.main.GetComponent<AudioSource>();
+                audio.PlayOneShot(sound);
         }
+     
     }
 }

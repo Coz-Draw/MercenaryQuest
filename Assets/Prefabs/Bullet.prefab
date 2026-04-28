@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 9141338218809068281}
   m_Layer: 0
   m_Name: Bullet
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  sound: {fileID: 8300000, guid: fd2fa06d66e31f746844a10f3779f7c7, type: 3}
+  shootSound: {fileID: 8300000, guid: fd2fa06d66e31f746844a10f3779f7c7, type: 3}
 --- !u!58 &9141338218809068280
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class JohnMovement : MonoBehaviour
@@ -8,60 +7,58 @@ public class JohnMovement : MonoBehaviour
     public float JumpForce = 3f;
     public GameObject BulletPrefab;
 
+    public GameOverUI gameOverUI;
+
     private Rigidbody2D rb;
     private Animator animator;
     private float horizontal;
     private bool grounded;
     private float lastShoot;
-    private int health = 5;
 
-    private void Start()
+    private int health = 5;
+    private bool isDead = false;
+
+    void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
 
-    private void Update()
+    void Update()
     {
-        // Movimiento
+        if (isDead) return;
+
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        // Girar personaje
-        if (horizontal < 0.0f) transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
-        else if (horizontal > 0.0f) transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        if (horizontal < 0) transform.localScale = new Vector3(-1, 1, 1);
+        else if (horizontal > 0) transform.localScale = new Vector3(1, 1, 1);
 
-        // Animaci�n
         if (animator != null)
-            animator.SetBool("running", horizontal != 0.0f);
+            animator.SetBool("running", horizontal != 0);
 
-        // Detectar suelo (m�s estable)
         grounded = Physics2D.Raycast(transform.position, Vector2.down, 0.2f);
-        Debug.DrawRay(transform.position, Vector2.down * 0.2f, Color.red);
 
-        // Salto CONTROLADO (sin AddForce)
         if (Input.GetKeyDown(KeyCode.W) && grounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, JumpForce);
         }
 
-        // Disparar
         if (Input.GetKey(KeyCode.Space) && Time.time > lastShoot + 0.25f)
         {
             Shoot();
             lastShoot = Time.time;
         }
 
-        // FORZAR Z = 0 (evita que se vaya detr�s del escenario)
         transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        // Movimiento estable (sin exageraci�n)
+        if (isDead) return;
         rb.linearVelocity = new Vector2(horizontal * Speed, rb.linearVelocity.y);
     }
 
-    private void Shoot()
+    void Shoot()
     {
         Vector3 direction = transform.localScale.x > 0 ? Vector3.right : Vector3.left;
 
@@ -78,7 +75,33 @@ public class JohnMovement : MonoBehaviour
 
     public void Hit()
     {
-        health -= 1;
-        if (health <= 0) Destroy(gameObject);
+        if (isDead) return;
+
+        health--;
+
+        if (health <= 0)
+        {
+            isDead = true;
+
+            if (animator != null)
+                animator.SetTrigger("johnDie");
+
+            rb.linearVelocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Static;
+
+            GetComponent<Collider2D>().enabled = false;
+
+            StartCoroutine(Die());
+        }
+    }
+
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        if (gameOverUI != null)
+            gameOverUI.ShowGameOver();
+
+        Destroy(gameObject);
     }
 }

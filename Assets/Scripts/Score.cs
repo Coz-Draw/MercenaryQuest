@@ -3,23 +3,31 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
-    
-    private int score = 0;
-    public Text scoreText;
+    public int cobre = 0;
+    public int oro = 0;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Text cobreText;
+    public Text oroText;
+
     void Start()
     {
-        score = 0;
+        cobreText.text = "COBRE: 0";
+        oroText.text = "ORO: 0";
     }
 
-    // Update is called once per frame
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "moneda")
+        if (collision.CompareTag("moneda"))
         {
-            score++;
-            scoreText.text = "SCORE: " + score;
+            cobre++;
+            cobreText.text = "COBRE: " + cobre;
+            Destroy(collision.gameObject);
+        }
+        else if (collision.CompareTag("moneda2"))
+        {
+            oro++;
+            oroText.text = "ORO: " + oro;
+            Destroy(collision.gameObject);
         }
     }
 }

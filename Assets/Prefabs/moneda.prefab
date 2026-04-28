@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3230501038110619252}
   - component: {fileID: 6369798446055204886}
   - component: {fileID: -8767321697642642095}
+  - component: {fileID: -2814063524965053078}
   m_Layer: 0
-  m_Name: coin1_16x16_0
-  m_TagString: Untagged
+  m_Name: moneda
+  m_TagString: moneda
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,3 +142,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adaa59e53a7ea0b4186df8ff940f308d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  sound: {fileID: 8300000, guid: deba376f14c6ebc4f8ba7b170995f0fe, type: 3}
+--- !u!111 &-2814063524965053078
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210147846013244321}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0

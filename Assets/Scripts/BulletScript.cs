@@ -3,7 +3,7 @@ using UnityEngine;
 public class BulletScript : MonoBehaviour
 {
     public float speed = 10f;
-    public AudioClip sound;
+    public AudioClip shootSound; // 🔊 sonido de disparo
 
     private Rigidbody2D rb;
     private Vector2 direction;
@@ -12,15 +12,12 @@ public class BulletScript : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-        // Sonido (opcional)
-        if (Camera.main != null && sound != null)
+        // 🔊 reproducir sonido al disparar
+        if (shootSound != null)
         {
-            AudioSource audio = Camera.main.GetComponent<AudioSource>();
-            if (audio != null)
-                audio.PlayOneShot(sound);
+            AudioSource.PlayClipAtPoint(shootSound, transform.position);
         }
 
-        // Autodestrucción
         Destroy(gameObject, 2f);
     }
 
@@ -36,23 +33,11 @@ public class BulletScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Destruir entre balas
-        if (other.CompareTag("Bullet"))
-        {
-            Destroy(other.gameObject);
-            Destroy(gameObject);
-            return;
-        }
-
-        // Daño enemigo
-        GruntScript grunt = other.GetComponent<GruntScript>();
-        if (grunt != null)
-            grunt.Hit();
-
-        // Daño jugador (opcional)
         JohnMovement player = other.GetComponent<JohnMovement>();
         if (player != null)
+        {
             player.Hit();
+        }
 
         Destroy(gameObject);
     }
